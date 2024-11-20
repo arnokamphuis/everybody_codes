@@ -40,9 +40,13 @@ if part != 3:
     print(total)
 
 else:
+    
+    def key_of_min(d):
+        return min(d, key = d.get)
+    
     meteors = [[int(x) for x in line.split(' ')] for line in data]
     meteors = [ (meteor[1], meteor[0]) for meteor in meteors]
-
+    
     def get_positions_projectile(start_pos, power):
         positions = [start_pos]
         positions += [(start_pos[0]+p, start_pos[1]+p) for p in range(1,power+1)]
@@ -67,6 +71,11 @@ else:
                     if t not in pp[tuple(x)].keys():
                         pp[tuple(x)][t] = set()
                     pp[tuple(x)][t].add((segment,power))
+                    # stronger = [i for i in pp[tuple(x)][t] if i[0] == segment and i[1] > power]
+                    # if len(stronger) == 0:
+                    #     # remove all elements from set that are this segment
+                    #     pp[tuple(x)][t] = {i for i in pp[tuple(x)][t] if i[0] != segment}
+                    #     pp[tuple(x)][t].add((segment,power))
 
     total_score = 0
     for meteor in meteors:
@@ -82,7 +91,7 @@ else:
                         for s, p in lst:
                             if mins[s] > p:
                                 mins[s] = p
-                        total_score += min([(ord(s)-ord('A')+1) * p for s,p in mins.items()])
+                        total_score += min([(ord(s)-ord('A')+1) * p for s,p in mins.items() if p < 10**9])
                     break
                 else:                  
                     continue
