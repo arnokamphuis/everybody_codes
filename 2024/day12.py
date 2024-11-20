@@ -54,30 +54,37 @@ else:
         return [(start_pos[0]-p, start_pos[1]-p) for p in range(start_pos[0]+1)]
 
     max_time = max([meteor[0] for meteor in meteors])
-    print("max time", max_time)
+    max_dist = max([meteor[1] for meteor in meteors])
 
     pp = defaultdict(dict)
     for segment, projectile in {'A':[0,0], 'B':[1,0], 'C':[2,0]}.items():
         for power in range(max_time):
-            print(power)
+            # if power % 1000 == 0:
+            #     print(power)
             gpp = get_positions_projectile(projectile, power)
             for t, x in enumerate(gpp):
-                if t not in pp[tuple(x)].keys():
-                    pp[tuple(x)][t] = set()
-                pp[tuple(x)][t].add((segment,power))
+                if x[1] < max_dist:
+                    if t not in pp[tuple(x)].keys():
+                        pp[tuple(x)][t] = set()
+                    pp[tuple(x)][t].add((segment,power))
 
+    total_score = 0
     for meteor in meteors:
-        print("="*50)
         mps = get_positions_meteor(meteor)
         options = []
         for t, m in enumerate(mps):
             key = tuple(m)
             if key in pp:
                 in_time = [pp[key] for tt, power in pp[key].items() if t >= tt]
-                print(t, in_time)
-                # print(tuple(m))
-                continue
-            else:
-                print(" NOT ", m)
+                if len(in_time) > 0:
+                    for lst in in_time[0].values():
+                        mins = {'A': 10**9, 'B': 10**9, 'C': 10**9 }
+                        for s, p in lst:
+                            if mins[s] > p:
+                                mins[s] = p
+                        total_score += min([(ord(s)-ord('A')+1) * p for s,p in mins.items()])
+                    break
+                else:                  
+                    continue
                 
-    # print(pp)
+    print(total_score)
