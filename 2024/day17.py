@@ -32,6 +32,7 @@ def mst(edges):
     edges.sort(key=lambda x: x[2])
     parent = {}
     rank = {}
+    
     def find(x):
         if x not in parent:
             parent[x] = x
@@ -39,6 +40,7 @@ def mst(edges):
         if parent[x] != x:
             parent[x] = find(parent[x])
         return parent[x]
+    
     def union(x, y):
         rootx = find(x)
         rooty = find(y)
@@ -52,6 +54,7 @@ def mst(edges):
             parent[rooty] = rootx
             rank[rootx] += 1
         return True
+    
     mst = []
     for edge in edges:
         if union(edge[0], edge[1]):
@@ -70,8 +73,7 @@ else:
     for edge in edges:
         components[edge[0]].append(edge[1])
         components[edge[1]].append(edge[0])
-        
-    # count the number of connected components
+
     count = 0
     visited = set()
     connected_components = []
