@@ -94,19 +94,14 @@ elif part == 3:
         if pull == 0:
             return 0
         
-        prev_pos = [ (pos[i] + turns[i] - 1) % len(rolls[i]) for i in range(number_of_rolls) ]
-        curr_pos = [ (pos[i] + turns[i]    ) % len(rolls[i]) for i in range(number_of_rolls) ]
-        next_pos = [ (pos[i] + turns[i] + 1) % len(rolls[i]) for i in range(number_of_rolls) ]
-
-        curr_coins = coins_in_code(get_code_from_positions(curr_pos))
-        prev_coins = coins_in_code(get_code_from_positions(prev_pos))
-        next_coins = coins_in_code(get_code_from_positions(next_pos))
-    
-        curr_coins += get_total_coins(curr_pos, pull - 1, find_func)
-        prev_coins += get_total_coins(prev_pos, pull - 1, find_func)
-        next_coins += get_total_coins(next_pos, pull - 1, find_func)
+        options = []
+        for d in [-1,0,1]:
+            new_pos = [ (pos[i] + turns[i] + d) % len(rolls[i]) for i in range(number_of_rolls) ]
+            coins = coins_in_code(get_code_from_positions(new_pos))
+            coins += get_total_coins(new_pos, pull - 1, find_func)
+            options.append(coins)
+        extreme = find_func(options)
         
-        extreme = find_func(curr_coins, prev_coins, next_coins)
         DP[find_func.__name__][key] = extreme
         return extreme
     
