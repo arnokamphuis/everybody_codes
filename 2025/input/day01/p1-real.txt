@@ -1,0 +1,3 @@
+Quarnverax,Drazrilor,Cynvardar,Garsar,Dorsar,Fyndaxis,Rylarsor,Feronar,Kynxal,Baldar
+
+L4,R2,L7,R1,L1,R7,L2,R7,L1,R8,L7
