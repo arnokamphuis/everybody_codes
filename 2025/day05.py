@@ -76,16 +76,12 @@ def run(part, sort):
         print(f"Part {part}: {quality}")
 
     elif part == 2:
-        min_quality = 1e99
-        max_quality = -1e99
+        qualities = []
         for sword in data:
             numbers = list(map(int,sword.split(':')[1].split(',')))
             quality = score_fishbone(numbers)
-            if quality < min_quality:
-                min_quality = quality
-            if quality > max_quality:
-                max_quality = quality
-        print(f"Part {part}: {max_quality - min_quality}")
+            qualities.append(quality)
+        print(f"Part {part}: {max(qualities) - min(qualities)}")
 
     else:
         qualities = []
