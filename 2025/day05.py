@@ -52,14 +52,6 @@ def score_fishbone(numbers, part = 1):
             levels.append(int(level))
         return int(''.join(map(str, backbone))), levels
 
-def comp(a, b):
-    if a[1] > b[1]:
-        return -1
-    elif a[1] < b[1]:
-        return 1
-    else:
-        return b[0] - a[0] 
-
 def run(part, sort):
     filename = 'input/day{0:02d}/p{1}-{2}.txt'.format(day, part, sort)
     with open(filename, 'r') as file:
@@ -88,8 +80,10 @@ def run(part, sort):
         for sword in data:
             numbers = list(map(int,sword.split(':')[1].split(',')))
             quality = score_fishbone(numbers, 3)
-            qualities.append((len(qualities)+1, quality))
-        result = sum([ (idx+1) * id for idx, (id, _) in enumerate(sorted(qualities, key=cmp_to_key(comp)))])
+            qualities.append((quality, (len(qualities)+1)))
+        qualities.sort(reverse=True)
+
+        result = sum([ idx * id for idx, (_, id) in enumerate(qualities, start=1)])
         print(f"Part {part}: {result}")
 
 
