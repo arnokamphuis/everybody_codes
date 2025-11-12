@@ -1,5 +1,6 @@
 from copy import deepcopy
 import sys
+from time import perf_counter
 from sympy import ceiling, floor, prod
 from functools import cmp_to_key
 
@@ -38,26 +39,44 @@ def run(part, sort):
                     if len(newname) < 11:
                         count_complete_names(newname, rules, result)
 
+    def count_complete_name_optimized(last, length, rules, memoization={}):
+        key = (last, length)
+        if key in memoization:
+            return memoization[key]
+        
+        total = 0
+        if length >= 7:
+            total = 1
+        if length < 11:
+            if last in rules:
+                for nextchar in rules[last]:
+                    total += count_complete_name_optimized(nextchar, length + 1, rules, memoization)
+        memoization[key] = total
+        return total
+
+    start = perf_counter() 
+    result = None
     if part == 1:
         for name in names:
             if check_name(name, rules):
-                print(f"Part {part}: {name}")
+                result = name
+        et1 = perf_counter()
     elif part == 2:
         result = 0
         for idx, name in enumerate(names, start=1):
             if check_name(name, rules):
                 result += idx
-        print(f"Part {part}: {result}")
     elif part == 3:
-        result = set()
-        prefixes_done = set()
-        for name in names:
-            if not any([prefix in name for prefix in prefixes_done]):
-                if check_name(name, rules):
-                    prefixes_done.add(name)
-                    count_complete_names(name, rules, result)
-        print(f"Part {part}: {len(result)}")
+        total = 0
+        filtered_names = [name for name in names if not any([name != testname and name.startswith(testname) for testname in names])]
+        for name in filtered_names:
+            if check_name(name, rules):
+                total += count_complete_name_optimized(name[-1], len(name), rules)
+        result = total
 
+    end = perf_counter() 
+
+    print(f"Part {part} ({ceiling((end - start) * 1000000)} micros): \t{result}")
 
 if part == 0:
     run(1, sort)
