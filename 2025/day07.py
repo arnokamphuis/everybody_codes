@@ -50,9 +50,12 @@ def run(part, sort):
         print(f"Part {part}: {result}")
     elif part == 3:
         result = set()
+        prefixes_done = set()
         for name in names:
-            if check_name(name, rules):
-                count_complete_names(name, rules, result)
+            if not any([prefix in name for prefix in prefixes_done]):
+                if check_name(name, rules):
+                    prefixes_done.add(name)
+                    count_complete_names(name, rules, result)
         print(f"Part {part}: {len(result)}")
 
 
