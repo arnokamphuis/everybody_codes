@@ -1,0 +1,16 @@
+Quennar,Quenmal,Aznar,Quengarath,Rythmal,Rythnar,Azgarath,Azmal,Rythgarath
+
+m > a
+z > g,b
+A > z
+n > g,m,n,a
+a > r,t,l
+t > h
+g > a
+R > y
+r > a
+u > b
+Q > u
+h > g,m,n
+y > b
+e > n

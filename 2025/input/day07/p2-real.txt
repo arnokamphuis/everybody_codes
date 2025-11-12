@@ -1,0 +1,28 @@
+Kharzeth,Kharfarin,Kharkyris,Drakther,Khargaz,Kharzris,Quirzris,Kharther,Khargaz,Drakzeth,Braether,Drakdaros,Quirsin,Kharkyris,Kharsin,Lazsin,Braezris,Braesin,Narzris,Dalfarin,Khardaros,Kharther,Kharzris,Dalsin,Calmarn,Quirdravor,Lazgaz,Braegaz,Drakfarin,Daldaros,Quirgaz,Dalgaz,Braemarn,Calzris,Lazther,Calkyris,Narmarn,Drakmarn,Lazfarin,Braekyris,Calther,Narkyris,Drakdravor,Kharzeth,Drakgaz,Khardaros,Narzeth,Narsin,Braefarin,Narther,Caldravor,Caldaros,Draksin,Dalther,Kharmarn,Drakkyris,Lazdaros,Daldravor,Kharmarn,Quirmarn,Khardravor,Drakzris,Braezeth,Narfarin,Lazkyris,Dalzeth,Jaldaros,Dalkyris,Jalther,Calsin,Quirther,Lazzris,Jaldravor,Calfarin,Nardaros,Jalsin,Kharsin,Lazzeth,Lazmarn,Jalzeth,Lazdravor,Nargaz,Calzeth,Calgaz,Kharfarin,Braedravor,Jalgaz,Nardravor,Quirdaros,Quirzeth,Jalzris,Dalzris,Quirkyris,Braedaros,Jalmarn,Jalkyris,Jalfarin,Khardravor,Quirfarin,Dalmarn
+
+t > h
+D > a,r
+o > s,r
+z > r,e,d,k,z,t,m,g,f,s
+s > i
+L > a
+d > a,r
+r > z,i,o,a,n,v,d,k,t,m,g,f,s
+J > a
+g > a
+y > r
+h > e,v
+i > r,s,n
+C > a
+l > d,k,z,t,m,g,f,s
+m > a
+u > i,v
+N > a
+v > o
+Q > u
+K > h
+e > t,r,d,k,z,m,g,f,s
+a > v,r,z,e,k
+k > y,d,k,z,t,m,g,f,s
+f > a
+B > r
