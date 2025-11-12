@@ -26,19 +26,18 @@ def run(part, sort):
                 return False
         return True
     
-    def count_complete_names(name, rules):
-        result = set()
+    def count_complete_names(name, rules, result=set()):
         lastchar = name[-1]
 
         if lastchar in rules:
             for nextchar in rules[lastchar]:
                 newname = name + nextchar
-                if 7 <= len(newname) <= 11:
-                    result.add(newname)
-                if len(newname) < 11:
-                    result.update(count_complete_names(newname, rules))
-        return result
-        
+                if newname not in result:
+                    if 7 <= len(newname) <= 11:
+                        result.add(newname)
+                    if len(newname) < 11:
+                        count_complete_names(newname, rules, result)
+
     if part == 1:
         for name in names:
             if check_name(name, rules):
@@ -53,7 +52,7 @@ def run(part, sort):
         result = set()
         for name in names:
             if check_name(name, rules):
-                result.update(count_complete_names(name, rules))
+                count_complete_names(name, rules, result)
         print(f"Part {part}: {len(result)}")
 
 
