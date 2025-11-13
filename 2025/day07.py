@@ -12,22 +12,29 @@ if len(sys.argv) != 3:
 part = int(sys.argv[1])
 sort = sys.argv[2]
 
+
 def run(part, sort):
+    # Load names and production rules from the input file
     filename = 'input/day{0:02d}/p{1}-{2}.txt'.format(day, part, sort)
     with open(filename, 'r') as file:
         data = [line.strip() for line in file]
 
     names = data[0].split(',')
-    rules = { r[0]: r[1].split(',') for r in [line.split(' > ') for line in data[2:]]}
+    # rules is a mapping from character -> list of allowed following characters
+    rules = {r[0]: r[1].split(',') for r in [line.split(' > ') for line in data[2:]]}
+
 
     def check_name(name, rules):
+        # Verify every adjacent character pair is allowed by rules
         nz = zip(name[0:-1], name[1:])
         for f, t in nz:
             if t not in rules[f]:
                 return False
         return True
     
+
     def count_complete_names(name, rules, result=set()):
+        # Recursively expand `name` by allowed rules and collect valid names
         lastchar = name[-1]
 
         if lastchar in rules:
@@ -39,14 +46,18 @@ def run(part, sort):
                     if len(newname) < 11:
                         count_complete_names(newname, rules, result)
 
+
     def count_complete_name_optimized(last, length, rules, memoization={}):
+        # DP / memoized version that counts completions starting from `last`
         key = (last, length)
         if key in memoization:
             return memoization[key]
         
         total = 0
+        # Count a name as valid if we've reached minimum length
         if length >= 7:
             total = 1
+        # Continue expanding until maximum length
         if length < 11:
             if last in rules:
                 for nextchar in rules[last]:
@@ -54,19 +65,22 @@ def run(part, sort):
         memoization[key] = total
         return total
 
-    start = perf_counter() 
+    start = perf_counter()
     result = None
     if part == 1:
+        # Find the one valid name that passes the rule check
         for name in names:
             if check_name(name, rules):
                 result = name
         et1 = perf_counter()
     elif part == 2:
+        # Sum indices (1-based) of valid names
         result = 0
         for idx, name in enumerate(names, start=1):
             if check_name(name, rules):
                 result += idx
     elif part == 3:
+        # For each non-prefix name count how many valid completions exist
         total = 0
         filtered_names = [name for name in names if not any([name != testname and name.startswith(testname) for testname in names])]
         for name in filtered_names:
@@ -74,9 +88,10 @@ def run(part, sort):
                 total += count_complete_name_optimized(name[-1], len(name), rules)
         result = total
 
-    end = perf_counter() 
+    end = perf_counter()
 
     print(f"Part {part} ({ceiling((end - start) * 1000000)} micros): \t{result}")
+
 
 if part == 0:
     run(1, sort)

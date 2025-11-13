@@ -11,9 +11,12 @@ if len(sys.argv) != 3:
 part = int(sys.argv[1])
 sort = sys.argv[2]
 
+# A simple tree-like structure: each node (a "bone") can have left/middle/right
 fish = [{'left': None, 'middle': None, 'right': None}]
 
+
 def next_element(number, fishbone):
+    # Insert `number` into the first available slot in the list-of-nodes
     if fishbone is None:
         return None
     for bone in fishbone:
@@ -28,11 +31,14 @@ def next_element(number, fishbone):
             if bone['right'] is None:
                 bone['right'] = number
                 return fishbone
+    # If no slot found, append a new bone with `number` as its middle
     new_bone = {'left': None, 'middle': number, 'right': None}
     fishbone.append(new_bone)
     return fishbone
 
-def score_fishbone(numbers, part = 1):
+
+def score_fishbone(numbers, part=1):
+    # Build a fishbone (list of bones) and produce combined numeric "quality"
     fish2 = deepcopy(fish)
     for number in numbers:
         fish2 = next_element(number, fish2)
@@ -52,6 +58,7 @@ def score_fishbone(numbers, part = 1):
             levels.append(int(level))
         return int(''.join(map(str, backbone))), levels
 
+
 def run(part, sort):
     filename = 'input/day{0:02d}/p{1}-{2}.txt'.format(day, part, sort)
     with open(filename, 'r') as file:
@@ -59,7 +66,8 @@ def run(part, sort):
 
     backbone = []
     if part == 1:
-        data = list(map(int,data[0].split(':')[1].split(',')))
+        # Input lines like "name:1,2,3", parse the list and create fish1
+        data = list(map(int, data[0].split(':')[1].split(',')))
         fish1 = deepcopy(fish)
         for number in data:
             fish1 = next_element(number, fish1)
@@ -68,24 +76,25 @@ def run(part, sort):
         print(f"Part {part}: {quality}")
 
     elif part == 2:
+        # Evaluate the quality for each sword line and return the range
         qualities = []
         for sword in data:
-            numbers = list(map(int,sword.split(':')[1].split(',')))
+            numbers = list(map(int, sword.split(':')[1].split(',')))
             quality = score_fishbone(numbers)
             qualities.append(quality)
         print(f"Part {part}: {max(qualities) - min(qualities)}")
 
     else:
+        # For the final part compute a weighted ranking across sword qualities
         qualities = []
         for sword in data:
-            numbers = list(map(int,sword.split(':')[1].split(',')))
+            numbers = list(map(int, sword.split(':')[1].split(',')))
             quality = score_fishbone(numbers, 3)
-            qualities.append((quality, (len(qualities)+1)))
+            qualities.append((quality, (len(qualities) + 1)))
         qualities.sort(reverse=True)
 
-        result = sum([ idx * id for idx, (_, id) in enumerate(qualities, start=1)])
+        result = sum([idx * id for idx, (_, id) in enumerate(qualities, start=1)])
         print(f"Part {part}: {result}")
-
 
 
 if part == 0:

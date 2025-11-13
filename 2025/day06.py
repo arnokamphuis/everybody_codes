@@ -11,7 +11,9 @@ if len(sys.argv) != 3:
 part = int(sys.argv[1])
 sort = sys.argv[2]
 
+
 def find_pairs(knight, novice, data):
+    # Count ordered pairs where a knight appears before a novice in the sequence
     knights = [1 if d == knight else 0 for d in data]
     novices = [1 if d == novice else 0 for d in data]
     ks = 0
@@ -25,15 +27,16 @@ def find_pairs(knight, novice, data):
 
 
 def find_pairs_long(knight, novice, data, repeats, width):
+    # Efficient counting over a virtually repeated sequence (data repeated `repeats` times)
 
     total_length = len(data) * repeats
 
     knights = [1 if d == knight else 0 for d in data]
     novices = [1 if d == novice else 0 for d in data]
 
-
+    # Initialize count of knights in the first sliding window of size `width`
     knight_count = 0
-    for idx in range(0, min(width, total_length-1)+1):
+    for idx in range(0, min(width, total_length - 1) + 1):
         if knights[idx % len(data)] == 1:
             knight_count += 1
 
@@ -44,8 +47,9 @@ def find_pairs_long(knight, novice, data, repeats, width):
         if novices[index] == 1:
             pairs += knight_count
 
+        # Slide the window: remove left, add right when applicable
         left = i - width
-        if left >=0:
+        if left >= 0:
             if knights[left % len(data)] == 1:
                 knight_count -= 1
         right = i + 1 + width
@@ -55,19 +59,23 @@ def find_pairs_long(knight, novice, data, repeats, width):
 
     return pairs
 
+
 def run(part, sort):
     filename = 'input/day{0:02d}/p{1}-{2}.txt'.format(day, part, sort)
     with open(filename, 'r') as file:
+        # single-line input representing a sequence
         data = [line.strip() for line in file][0]
 
     pairs = 0
     if part == 1:
         pairs += find_pairs('A', 'a', data)
     elif part == 2:
+        # Sum contributions for multiple knight/novice letter pairs
         pairs += find_pairs('A', 'a', data)
         pairs += find_pairs('B', 'b', data)
         pairs += find_pairs('C', 'c', data)
     elif part == 3:
+        # For long-run tests use larger width/repeats parameters
         if sort == 'test':
             # width = 10
             # repeats = 2
@@ -81,7 +89,7 @@ def run(part, sort):
         Bs = find_pairs_long('B', 'b', data, repeats, width)
         Cs = find_pairs_long('C', 'c', data, repeats, width)
         pairs += As + Bs + Cs
-    
+
     print(f"Part {part}: {pairs}")
 
 
