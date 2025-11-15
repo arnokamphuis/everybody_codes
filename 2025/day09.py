@@ -47,7 +47,7 @@ def run(part, sort):
     # [('a','a'), ('b','d'), ('c','c')] — one tuple per character position.
     pairs = list(zip(*(scales.values())))
 
-    def find_possible_parents(child_id, pairs, scales):
+    def find_possible_parents(child_id, pairs, scales, found_children=set()):
         """Find parent candidate pairs for a given child index.
 
         For the child identified by `child_id` (which is an index into the
@@ -66,11 +66,11 @@ def run(part, sort):
         parent_ables = []
         # enumerate over the ordered keys of scales to get index positions
         for p1_id, id1 in enumerate(scales.keys()):
-            if child_id != p1_id:
+            if child_id != p1_id and p1_id not in found_children:
                 for p2_id, id2 in enumerate(scales.keys()):
                     # ensure we don't reuse the child and we only consider
                     # each unordered parent pair once (p2_id > p1_id)
-                    if child_id != p2_id and p2_id > p1_id:
+                    if child_id != p2_id and p2_id > p1_id and p2_id not in found_children:
                         possible = True
                         # Check every character position across all samples
                         for p in pairs:
@@ -103,8 +103,11 @@ def run(part, sort):
         id tuples.
         """
         result = defaultdict(list)
+        found_children = set()
         for idx, child_id in enumerate(scales.keys()):
-            parent_ables = find_possible_parents(idx, pairs, scales)
+            parent_ables = find_possible_parents(idx, pairs, scales, found_children)
+            if len(parent_ables) > 0:
+                found_children.add(child_id)
             result[child_id] = parent_ables
         return result
 
